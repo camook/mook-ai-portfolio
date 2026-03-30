@@ -8,6 +8,12 @@ import { experienceAdminRouter } from "./api/admin/experience.js";
 import { techStackAdminRouter } from "./api/admin/tech-stack.js";
 import { siteContentAdminRouter } from "./api/admin/site-content.js";
 import { statsAdminRouter } from "./api/admin/stats.js";
+import { projectsPublicRouter } from "./api/public/projects.js";
+import { experiencePublicRouter } from "./api/public/experience.js";
+import { techStackPublicRouter } from "./api/public/tech-stack.js";
+import { contentPublicRouter } from "./api/public/content.js";
+import { statsPublicRouter } from "./api/public/stats.js";
+import { imagesPublicRouter } from "./api/public/images.js";
 import type { AppEnv } from "./app-env.js";
 
 export type { AppEnv };
@@ -24,6 +30,13 @@ const apiAdmin = new Hono<AppEnv>()
 const api = new Hono<AppEnv>()
   .get("/status", (c) => c.json({ status: "ok" }))
   .get("/health", (c) => c.json({ healthy: true }))
+  // Public read-only endpoints
+  .route("/projects", projectsPublicRouter)
+  .route("/experience", experiencePublicRouter)
+  .route("/tech-stack", techStackPublicRouter)
+  .route("/content", contentPublicRouter)
+  .route("/stats", statsPublicRouter)
+  .route("/images", imagesPublicRouter)
   // /api/admin and /api/admin/* — protected by Cloudflare Access JWT
   .use("/admin", accessAuth)
   .use("/admin/*", accessAuth)

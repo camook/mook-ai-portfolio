@@ -61,7 +61,23 @@ D1 (SQLite at the edge). Schema lives in `migrations/` — numbered SQL files ap
 
 ### API routes
 
-All admin API routes live under `/api/admin/*` and require Cloudflare Access JWT. Sub-routers:
+#### Public (unauthenticated)
+
+Live under `/api/*`. All return only `published` records. Responses are cached via the Cache API with `Cache-Control: public, max-age=60` (`caches.default` — Cloudflare Workers global, cast as `(caches as unknown as { default: Cache }).default`).
+
+| Mount | File | Notes |
+|---|---|---|
+| `GET /api/projects` | `src/lib/server/api/public/projects.ts` | Ordered by `sort_order ASC`; each project includes its `images` array |
+| `GET /api/projects/:slug` | `src/lib/server/api/public/projects.ts` | Single published project by slug with images |
+| `GET /api/experience` | `src/lib/server/api/public/experience.ts` | Ordered by `sort_order ASC, year DESC` |
+| `GET /api/tech-stack` | `src/lib/server/api/public/tech-stack.ts` | Grouped by `category` (`pill`/`runtime`/`infrastructure`) |
+| `GET /api/content` | `src/lib/server/api/public/content.ts` | Flat `{ [key]: value }` map of all `site_content` rows |
+| `GET /api/stats` | `src/lib/server/api/public/stats.ts` | Grouped by `section` (`hero`/`tech_stack`) |
+| `GET /api/images/*` | `src/lib/server/api/public/images.ts` | R2 proxy; wildcard handles slash keys (`projects/{id}/{imgId}.jpg`); `Cache-Control: public, max-age=31536000, immutable`; ETag + 304 support |
+
+#### Admin (Cloudflare Access JWT required)
+
+All admin API routes live under `/api/admin/*`. Sub-routers:
 
 | Mount | File | Verbs |
 |---|---|---|
@@ -73,7 +89,7 @@ All admin API routes live under `/api/admin/*` and require Cloudflare Access JWT
 
 Zod schemas for all request bodies are centralised in `src/lib/server/api/admin/schemas.ts`. **Important:** In Hono, register static route segments (e.g. `/reorder`) before dynamic ones (e.g. `/:id`) — Hono matches in registration order for the same HTTP method.
 
-R2 objects are private; use `GET /:id/images/:imageId/blob` to proxy them through the API.
+R2 objects are private; use `GET /:id/images/:imageId/blob` to proxy them through the admin API. The public `GET /api/images/*` endpoint also proxies R2 objects for published project images.
 
 ### Design system
 
