@@ -5,4 +5,4 @@ import { router } from "$lib/server/router";
 // Hono owns all routing decisions — /api/* is handled directly;
 // everything else falls through to SvelteKit SSR via resolve().
 export const handle: Handle = ({ event, resolve }) =>
-  router.fetch(event.request, { event, resolve });
+  router.fetch(event.request, { ...event.platform?.env, event, resolve });

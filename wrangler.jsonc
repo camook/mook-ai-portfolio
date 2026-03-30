@@ -39,5 +39,41 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
+  },
+
+  // Cloudflare Access — replace placeholders before deploying
+  // ACCESS_AUD: the "Application Audience (AUD) Tag" from your Access Application
+  // ACCESS_TEAM: your Cloudflare Zero Trust team name (e.g. "myteam" from myteam.cloudflareaccess.com)
+  "vars": {
+    "ENVIRONMENT": "production",
+    "ACCESS_AUD": "<ACCESS_AUD>",
+    "ACCESS_TEAM": "<ACCESS_TEAM>"
+  },
+
+  // Local dev overrides — Access JWT check is bypassed when ENVIRONMENT=development
+  // Note: named environments do not inherit top-level bindings, so d1/r2 must be re-declared
+  "env": {
+    "development": {
+      "vars": {
+        "ENVIRONMENT": "development",
+        "ACCESS_AUD": "dev",
+        "ACCESS_TEAM": "dev"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "mook-ai-portfolio-db",
+          "database_id": "<DATABASE_ID>",
+          "migrations_dir": "migrations",
+          "preview_database_id": "local"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "BUCKET",
+          "bucket_name": "portfolio-assets"
+        }
+      ]
+    }
   }
 }

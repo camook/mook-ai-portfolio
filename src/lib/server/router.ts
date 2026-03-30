@@ -1,31 +1,44 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import type { RequestEvent, ResolveOptions } from "@sveltejs/kit";
-import type { Env } from "../../app.js";
+import { accessAuth } from "./middleware/access-auth.js";
+import { onError } from "./middleware/error-handler.js";
+import { projectsAdminRouter } from "./api/admin/projects.js";
+import { experienceAdminRouter } from "./api/admin/experience.js";
+import { techStackAdminRouter } from "./api/admin/tech-stack.js";
+import { siteContentAdminRouter } from "./api/admin/site-content.js";
+import { statsAdminRouter } from "./api/admin/stats.js";
+import type { AppEnv } from "./app-env.js";
 
-type SvelteKitBindings = {
-  event: RequestEvent;
-  resolve: (
-    event: RequestEvent,
-    opts?: ResolveOptions,
-  ) => Promise<Response>;
-};
+export type { AppEnv };
 
-export type AppEnv = {
-  // Cloudflare bindings (DB, BUCKET, ASSETS) + SvelteKit resolve glue
-  Bindings: Env & SvelteKitBindings;
-};
+// Admin API sub-router — all paths are relative to the /api/admin mount point
+const apiAdmin = new Hono<AppEnv>()
+  .route("/projects", projectsAdminRouter)
+  .route("/experience", experienceAdminRouter)
+  .route("/tech-stack", techStackAdminRouter)
+  .route("/site-content", siteContentAdminRouter)
+  .route("/stats", statsAdminRouter);
 
 // API sub-router — all paths are relative to the /api mount point
 const api = new Hono<AppEnv>()
   .get("/status", (c) => c.json({ status: "ok" }))
-  .get("/health", (c) => c.json({ healthy: true }));
+  .get("/health", (c) => c.json({ healthy: true }))
+  // /api/admin and /api/admin/* — protected by Cloudflare Access JWT
+  .use("/admin", accessAuth)
+  .use("/admin/*", accessAuth)
+  .route("/admin", apiAdmin);
 
 // Root router — Hono is the single routing authority
-export const router = new Hono<AppEnv>()
+export const router = new Hono<AppEnv>().onError(onError)
   .use("/api/*", logger())
   .use("/api/*", cors())
   .route("/api", api)
-  // Catch-all: delegate to SvelteKit SSR
-  .all("*", (c) => c.env.resolve(c.env.event));
+  // /admin and /admin/* — protected by Cloudflare Access JWT (SvelteKit SSR pages)
+  .use("/admin", accessAuth)
+  .use("/admin/*", accessAuth)
+  // Catch-all: delegate to SvelteKit SSR, forwarding user identity to locals
+  .all("*", (c) => {
+    c.env.event.locals.user = c.var.user ?? null;
+    return c.env.resolve(c.env.event);
+  });

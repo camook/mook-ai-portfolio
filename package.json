@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build && wrangler dev --local --persist-to .wrangler/state",
+    "dev": "vite build && wrangler dev --env development --local --persist-to .wrangler/state",
     "dev:vite": "vite dev",
     "preview": "vite build && wrangler dev --remote",
     "deploy": "vite build && wrangler deploy",
@@ -37,8 +37,10 @@
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.2.2",
     "hono": "^4.12.9",
+    "jose": "^6.2.2",
     "svelte": "^5.55.1",
     "tailwindcss": "^4.2.2",
-    "vite": "^8.0.3"
+    "vite": "^8.0.3",
+    "zod": "^4.3.6"
   }
 }
