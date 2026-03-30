@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+@theme {
+  /* Font families */
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Display type scale (serif headings) */
+  --font-size-display-xs: 2.5rem;   /* 40px */
+  --font-size-display-sm: 3rem;     /* 48px */
+  --font-size-display-md: 3.75rem;  /* 60px */
+  --font-size-display-lg: 4.5rem;   /* 72px */
+  --font-size-display-xl: 6rem;     /* 96px */
+
+  /* Letter spacing */
+  --tracking-display: -0.03em;  /* tighten large serifs */
+  --tracking-body: -0.01em;     /* subtle tightening for Inter */
+  --tracking-label: 0.08em;     /* wide-set for mono labels */
+  --tracking-label-sm: 0.12em;  /* wider for small caps / tags */
+
+  /* Line heights */
+  --leading-display: 1.05;
+  --leading-heading: 1.2;
+  --leading-body: 1.65;
+  --leading-label: 1.4;
+
+  /* Font weights (named) */
+  --font-weight-display-light: 300;
+  --font-weight-display: 400;
+  --font-weight-display-medium: 500;
+  --font-weight-display-semibold: 600;
+
+
+  /* Background scale — deepest to elevated */
+  --color-bg-base: #0a0e1a;
+  --color-bg-subtle: #0d1224;
+  --color-bg-muted: #111827;
+  --color-bg-elevated: #1a2035;
+  --color-bg-overlay: #1e293b;
+
+  /* Blue accent scale */
+  --color-blue-950: #172554;
+  --color-blue-900: #1e3a8a;
+  --color-blue-800: #1d4ed8;
+  --color-blue-700: #2563eb;
+  --color-blue-600: #3b82f6;
+  --color-blue-500: #60a5fa;
+  --color-blue-400: #93c5fd;
+  --color-blue-300: #bfdbfe;
+
+  /* Muted borders */
+  --color-border-subtle: #1e2a3a;
+  --color-border-default: #1f2937;
+  --color-border-muted: #2d3748;
+  --color-border-strong: #374151;
+
+  /* Text hierarchy */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-disabled: #64748b;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg-base);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-heading);
+    font-weight: 400; /* serifs read heavy — regular weight is enough */
+  }
+
+  p, li, blockquote {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    letter-spacing: var(--tracking-body);
+    line-height: var(--leading-body);
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    letter-spacing: 0;
+  }
+}
+
+@layer components {
+  /* Large display headings — serif, cinematic */
+  .text-display-xl {
+    font-family: var(--font-display);
+    font-size: var(--font-size-display-xl);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 300;
+  }
+  .text-display-lg {
+    font-family: var(--font-display);
+    font-size: var(--font-size-display-lg);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 300;
+  }
+  .text-display-md {
+    font-family: var(--font-display);
+    font-size: var(--font-size-display-md);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-display);
+    font-weight: 400;
+  }
+  .text-display-sm {
+    font-family: var(--font-display);
+    font-size: var(--font-size-display-sm);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    font-weight: 400;
+  }
+  .text-display-xs {
+    font-family: var(--font-display);
+    font-size: var(--font-size-display-xs);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    font-weight: 500;
+  }
+
+  /* Stylistic italic variant for emphasis in display headings */
+  .text-display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  /* Mono label / tag — uppercase, tracked out */
+  .text-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 500;
+    letter-spacing: var(--tracking-label-sm);
+    line-height: var(--leading-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Mono label — regular case, slightly tracked */
+  .text-label-md {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    line-height: var(--leading-label);
+    color: var(--color-text-muted);
+  }
+
+  /* Body lead — slightly larger intro paragraph */
+  .text-lead {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 300;
+    letter-spacing: var(--tracking-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+}
+
+/* ── Page transitions (View Transitions API) ─────────────────────────── */
+
+@keyframes vt-page-out {
+  from {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Animate the outgoing snapshot */
+  ::view-transition-old(root) {
+    animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-page-out;
+  }
+
+  /* Animate the incoming snapshot, staggered slightly behind the exit */
+  ::view-transition-new(root) {
+    animation: 280ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-page-in;
+  }
+}
+
+/* Freeze the header in place during transitions so it doesn't re-animate */
+@media (prefers-reduced-motion: no-preference) {
+  header {
+    view-transition-name: site-header;
+  }
+
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation: none;
+  }
+}
+
+/* ── Scroll-reveal entrance ───────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity  0.6s cubic-bezier(0, 0, 0.2, 1) var(--reveal-delay, 0ms),
+    transform 0.6s cubic-bezier(0, 0, 0.2, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Skip entrance for reduced-motion users (JS also handles this, belt-and-suspenders) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "mook-ai-portfolio",
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "compatibility_date": "2025-03-07",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Local development overrides
+  "dev": {
+    "port": 5173,
+    "local_protocol": "http"
+  },
+
+  // Static assets served directly from the Cloudflare CDN
+  "assets": {
+    "directory": ".svelte-kit/cloudflare",
+    "binding": "ASSETS"
+  },
+
+  // D1 SQL database
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mook-ai-portfolio-db",
+      "database_id": "<DATABASE_ID>",
+      "migrations_dir": "migrations",
+      // Local state persisted to .wrangler/state so it survives restarts
+      "preview_database_id": "local"
+    }
+  ],
+
+  // R2 object storage
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "portfolio-assets"
+    }
+  ],
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

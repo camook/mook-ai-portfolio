@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.svelte-kit/
+
+# Wrangler local state (D1, R2, KV data)
+.wrangler/
+
+# Local secrets — never commit
+.dev.vars
