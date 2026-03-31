@@ -12,6 +12,7 @@
     title: string;
     description: string;
     tags?: string[];
+    categoryTags?: string[];
     href?: string;
     image?: string;
     imageAlt?: string;
@@ -27,6 +28,7 @@
     title,
     description,
     tags = [],
+    categoryTags = [],
     href,
     image,
     imageAlt = '',
@@ -98,6 +100,15 @@
         <Badge variant={status} dot class="ml-auto">{statusLabel}</Badge>
       {/if}
     </div>
+
+    <!-- Category tag badges -->
+    {#if categoryTags.length > 0}
+      <div class="flex flex-wrap gap-1.5 -mt-1">
+        {#each categoryTags as tag}
+          <Badge variant="neutral">{tag}</Badge>
+        {/each}
+      </div>
+    {/if}
 
     <!-- Title -->
     <h3

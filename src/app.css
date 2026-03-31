@@ -171,6 +171,16 @@
   }
 }
 
+/* ── Responsive display type scale ──────────────────────────────────── */
+
+@media (max-width: 639px) {
+  .text-display-xl { font-size: 2.75rem; }
+  .text-display-lg { font-size: 2.25rem; }
+  .text-display-md { font-size: 1.875rem; line-height: 1.15; }
+  .text-display-sm { font-size: 1.625rem; }
+  .text-display-xs { font-size: 1.375rem; }
+}
+
 /* ── Page transitions (View Transitions API) ─────────────────────────── */
 
 @keyframes vt-page-out {

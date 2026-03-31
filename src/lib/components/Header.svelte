@@ -5,10 +5,9 @@
   import Button from './Button.svelte';
 
   const navLinks = [
-    { href: '/',        label: 'Home',    index: '00' },
-    { href: '/work',    label: 'Work',    index: '01' },
-    { href: '/about',   label: 'About',   index: '02' },
-    { href: '/contact', label: 'Contact', index: '03' },
+    { href: '/projects',   label: 'Projects',   index: '01' },
+    { href: '/stack',      label: 'Stack',      index: '02' },
+    { href: '/experience', label: 'Experience', index: '03' },
   ] as const;
 
   let scrolled = $state(false);
@@ -29,8 +28,7 @@
   });
 
   function isActive(href: string) {
-    if (href === '/') return page.url.pathname === '/';
-    return page.url.pathname.startsWith(href);
+    return page.url.pathname === href || page.url.pathname.startsWith(href + '/');
   }
 
   function toggleMobile() {
@@ -54,8 +52,7 @@
              hover:text-white transition-colors duration-150 shrink-0"
       aria-label="Home"
     >
-      mook
-      <span class="font-mono text-[0.625rem] text-blue-500 align-super tracking-widest">ai</span>
+      Mook<span class="font-mono text-[0.75rem] text-blue-500 tracking-widest">-AI</span>
     </a>
 
     <!-- Desktop nav — centred -->
@@ -92,9 +89,9 @@
 
     <!-- Right side -->
     <div class="flex items-center gap-3 shrink-0">
-      <Button variant="ghost" size="sm" href="/contact" class="hidden md:inline-flex">
-        Get in touch
-      </Button>
+      <div class="hidden md:block">
+        <Button variant="ghost" size="sm" href="/connect">Connect</Button>
+      </div>
 
       <!-- Mobile hamburger -->
       <button
@@ -157,8 +154,8 @@
         {/each}
 
         <div class="pt-6 mt-2 border-t border-border-subtle">
-          <Button variant="primary" size="md" href="/contact" class="w-full justify-center">
-            Get in touch →
+          <Button variant="primary" size="md" href="/connect" class="w-full justify-center">
+            Connect →
           </Button>
         </div>
       </nav>

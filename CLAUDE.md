@@ -54,10 +54,11 @@ D1 (SQLite at the edge). Schema lives in `migrations/` — numbered SQL files ap
 
 - `projects` — portfolio cards; `card_size` (`large`/`medium`/`small`) controls which component renders; `tech_stack` and `category_tags` are JSON arrays stored as TEXT
 - `project_images` — R2 keys for project gallery images; linked to `projects` via `project_id`
-- `experience` — work history entries with optional `achievement_label`/`achievement_text`
+- `experience` — work history entries with optional `achievement_label`/`achievement_text`; `year_label` is a freeform era label (e.g. `"CURRENT"`, `"THE INCEPTION"`)
 - `tech_stack` — named tech items with `category` (`pill`/`runtime`/`infrastructure`) and optional `percentage`/`qualifier`
-- `site_content` — flat key/value CMS for copy (hero headline, etc.); upserted by key
-- `stats` — metric callouts used in hero and tech-stack sections; `section` is `hero` or `tech_stack`
+- `site_content` — flat key/value CMS for copy (hero headline, etc.); upserted by key; keys used by public pages: `hero_headline`, `hero_subtitle`, `stack_description`
+- `stats` — metric callouts; `section` is `hero` or `tech_stack`; `unit` is a display suffix (e.g. `"req/s"`)
+- `contact_submissions` — stores submissions from `POST /api/contact`; fields: `id`, `name`, `email`, `message`, `created_at`
 
 ### API routes
 
@@ -74,6 +75,7 @@ Live under `/api/*`. All return only `published` records. Responses are cached v
 | `GET /api/content` | `src/lib/server/api/public/content.ts` | Flat `{ [key]: value }` map of all `site_content` rows |
 | `GET /api/stats` | `src/lib/server/api/public/stats.ts` | Grouped by `section` (`hero`/`tech_stack`) |
 | `GET /api/images/*` | `src/lib/server/api/public/images.ts` | R2 proxy; wildcard handles slash keys (`projects/{id}/{imgId}.jpg`); `Cache-Control: public, max-age=31536000, immutable`; ETag + 304 support |
+| `POST /api/contact` | `src/lib/server/api/public/contact.ts` | Validates `{ name, email, message }` with Zod and inserts into `contact_submissions`; returns `{ ok: true }` on success |
 
 #### Admin (Cloudflare Access JWT required)
 
@@ -128,6 +130,29 @@ Two animation systems coexist:
 1. **Page transitions** — View Transitions API hooked via `onNavigate` in `+layout.svelte`. CSS keyframes `vt-page-out` / `vt-page-in` in `app.css`. The `<header>` is pinned with `view-transition-name: site-header` so it doesn't re-animate between pages.
 
 2. **Scroll-reveal** — `src/lib/actions/reveal.ts` is a Svelte action wrapping `IntersectionObserver`. Apply as `use:reveal={{ delay: 120 }}` + `class="reveal"` on any element. Elements start invisible; `is-revealed` is added on viewport entry. Immediately reveals for `prefers-reduced-motion` users.
+
+### Responsive type scale
+
+`app.css` defines `.text-display-{xl,lg,md,sm,xs}` utility classes with fixed pixel sizes. A `@media (max-width: 639px)` block in `app.css` scales all of them down for mobile. Do not rely on passing `hidden md:*` as a `class` prop into `Button` — the component's own `inline-flex` base class wins the cascade. Instead wrap with a `<div class="hidden md:block">`.
+
+## Public pages
+
+All routes live under `src/routes/(public)/`. Each page has a `+page.server.ts` that loads from D1; all pages include a static fallback array used when `platform?.env?.DB` is unavailable (e.g. `pnpm dev:vite`).
+
+| Route | File | Data loaded |
+|---|---|---|
+| `/` | `+page.svelte` + `+page.server.ts` | `site_content` (hero copy), `stats WHERE section='hero'`, `projects` (featured, limit 3) |
+| `/projects` | `(public)/projects/+page.svelte` | `projects WHERE status='published'` ordered by `sort_order` |
+| `/projects/[slug]` | `(public)/projects/[slug]/+page.svelte` | Single project + its images + all published slugs for prev/next nav |
+| `/stack` | `(public)/stack/+page.svelte` | `tech_stack` (grouped by category), `stats WHERE section='tech_stack'`, `site_content` (`stack_description`) |
+| `/experience` | `(public)/experience/+page.svelte` | `experience WHERE status='published'` ordered by `sort_order` |
+| `/connect` | `(public)/connect/+page.svelte` | Static — submits to `POST /api/contact` client-side |
+
+**Project grid layout** (`/projects`): `groupProjects()` in the page script groups cards into `HeroGroup` (large card + sidebar) or `RowGroup` (medium/small). `card_size` on each project row drives which component renders (`ProjectCardLarge` / `ProjectCardMedium` / `ProjectCardSmall`).
+
+**Experience timeline**: `year_label === 'CURRENT'` controls the blue glowing dot and badge. The large ghost year number is a decorative background element at `opacity-[0.1]`.
+
+**Contact form** (`/connect`): three states — `idle` (form), `submitting` (spinner on button), `success` (confirmation card). On success the form fields are cleared and a "Send another →" reset link is shown. Error messages from the API surface inline below the textarea.
 
 ## Admin UI
 

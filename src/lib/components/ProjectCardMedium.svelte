@@ -2,10 +2,16 @@
   import Badge from './Badge.svelte';
   import TechPill from './TechPill.svelte';
 
+  interface Metric {
+    label: string;
+    value: string;
+  }
+
   interface Props {
     title: string;
     description: string;
     tags?: string[];
+    metric?: Metric;
     href?: string;
     image?: string;
     imageAlt?: string;
@@ -20,6 +26,7 @@
     title,
     description,
     tags = [],
+    metric,
     href,
     image,
     imageAlt = '',
@@ -96,6 +103,16 @@
     <p class="text-sm font-sans font-light text-text-muted leading-relaxed line-clamp-2 -mt-1">
       {description}
     </p>
+
+    <!-- Key metric display -->
+    {#if metric}
+      <div class="flex items-baseline gap-2.5 border-t border-border-subtle pt-3 -mt-1">
+        <span
+          class="font-display text-[1.75rem] leading-none tracking-[-0.02em] text-text-primary"
+        >{metric.value}</span>
+        <span class="text-label">{metric.label}</span>
+      </div>
+    {/if}
 
     <!-- Tech pills -->
     {#if tags.length > 0}

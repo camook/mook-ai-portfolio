@@ -6,6 +6,9 @@
     title: string;
     description: string;
     tags?: string[];
+    features?: string[];
+    image?: string;
+    imageAlt?: string;
     href?: string;
     index?: string;
     year?: string;
@@ -18,6 +21,9 @@
     title,
     description,
     tags = [],
+    features = [],
+    image,
+    imageAlt = '',
     href,
     index,
     year,
@@ -29,18 +35,38 @@
 
 <article
   class="group relative flex flex-col gap-4 rounded-xl border border-border-subtle bg-bg-elevated
-         p-5 overflow-hidden transition-all duration-300
+         overflow-hidden transition-all duration-300
          hover:-translate-y-0.5 hover:border-border-muted hover:bg-bg-overlay
          hover:shadow-[0_4px_24px_rgba(59,130,246,0.07)]
          border-l-2 border-l-border-subtle hover:border-l-blue-600/50
          {extraClass}"
 >
-  <!-- Subtle top glow on hover -->
-  <div
-    class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-600/0
-           to-transparent transition-all duration-500
-           group-hover:via-blue-600/30 pointer-events-none"
-  ></div>
+  <!-- Thumbnail strip -->
+  {#if image}
+    <div class="relative h-16 overflow-hidden shrink-0">
+      <img
+        src={image}
+        alt={imageAlt}
+        class="absolute inset-0 size-full object-cover opacity-50
+               transition-[opacity,transform] duration-700 group-hover:opacity-70 group-hover:scale-[1.03]"
+      />
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background: linear-gradient(to bottom, transparent 20%, var(--color-bg-elevated));"
+      ></div>
+    </div>
+  {/if}
+
+  <!-- Subtle top glow on hover (when no image) -->
+  {#if !image}
+    <div
+      class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-600/0
+             to-transparent transition-all duration-500
+             group-hover:via-blue-600/30 pointer-events-none"
+    ></div>
+  {/if}
+
+  <div class="flex flex-col gap-4 px-5 {image ? 'pb-5' : 'pt-5 pb-5'}">
 
   <!-- Meta row -->
   <div class="flex items-center justify-between gap-2">
@@ -67,6 +93,18 @@
     {description}
   </p>
 
+  <!-- Optional feature bullets -->
+  {#if features.length > 0}
+    <ul class="space-y-1.5 -mt-1">
+      {#each features.slice(0, 3) as feature}
+        <li class="flex items-start gap-2 text-xs font-sans font-light text-text-disabled leading-relaxed">
+          <span class="mt-[0.35em] size-1 rounded-full bg-blue-600/50 shrink-0" aria-hidden="true"></span>
+          {feature}
+        </li>
+      {/each}
+    </ul>
+  {/if}
+
   <!-- Tech pills -->
   {#if tags.length > 0}
     <div class="flex flex-wrap gap-1.5">
@@ -91,4 +129,6 @@
       View project
     </a>
   {/if}
+
+  </div>
 </article>

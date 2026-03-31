@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Header, NavigationProgress } from '$lib/components';
+  import { Header, NavigationProgress, Footer } from '$lib/components';
 
   let { children } = $props();
 </script>
@@ -10,3 +10,5 @@
 <main>
   {@render children()}
 </main>
+
+<Footer />

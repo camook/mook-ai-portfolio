@@ -14,6 +14,7 @@ import { techStackPublicRouter } from "./api/public/tech-stack.js";
 import { contentPublicRouter } from "./api/public/content.js";
 import { statsPublicRouter } from "./api/public/stats.js";
 import { imagesPublicRouter } from "./api/public/images.js";
+import { contactPublicRouter } from "./api/public/contact.js";
 import type { AppEnv } from "./app-env.js";
 
 export type { AppEnv };
@@ -37,6 +38,7 @@ const api = new Hono<AppEnv>()
   .route("/content", contentPublicRouter)
   .route("/stats", statsPublicRouter)
   .route("/images", imagesPublicRouter)
+  .route("/contact", contactPublicRouter)
   // /api/admin and /api/admin/* — protected by Cloudflare Access JWT
   .use("/admin", accessAuth)
   .use("/admin/*", accessAuth)
