@@ -13,7 +13,7 @@
   <p class="mt-2 font-mono text-xs text-[--color-text-disabled]">Select a section to manage content.</p>
 
   <ul class="mt-8 space-y-2">
-    {#each sections as s}
+    {#each sections as s (s.href)}
       <li>
         <a
           href={s.href}

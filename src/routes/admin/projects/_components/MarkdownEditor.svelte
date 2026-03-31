@@ -83,7 +83,7 @@
 <div class="overflow-hidden rounded border border-[--color-border-default] focus-within:border-[--color-blue-600]">
   <!-- Tabs -->
   <div class="flex items-center border-b border-[--color-border-subtle] bg-[--color-bg-muted]">
-    {#each (['write', 'preview'] as const) as tab}
+    {#each (['write', 'preview'] as const) as tab (tab)}
       <button
         type="button"
         onclick={() => (mode = tab)}

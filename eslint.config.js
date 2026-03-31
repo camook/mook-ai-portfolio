@@ -26,6 +26,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: [".svelte-kit/", "dist/", ".wrangler/"],
+    ignores: [".svelte-kit/", "dist/", ".wrangler/", "**/*.svelte.ts", "**/*.svelte.js"],
   },
 );

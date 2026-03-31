@@ -113,7 +113,7 @@
         <span class="text-label text-blue-500 tracking-widest">LIBRARIES & FRAMEWORKS</span>
       </div>
       <div class="flex flex-wrap gap-2">
-        {#each pills as pill, i}
+        {#each pills as pill, i (pill.name)}
           <div use:reveal={{ delay: 120 + i * 25 }} class="reveal">
             <TechPill label={pill.name} />
           </div>
@@ -137,7 +137,7 @@
         </div>
 
         <div class="divide-y divide-border-subtle">
-          {#each runtime as item, i}
+          {#each runtime as item, i (item.name)}
             <div class="flex items-center gap-4 px-6 py-4">
               <span class="font-sans text-sm text-text-primary w-44 shrink-0">{item.name}</span>
               <div class="flex-1 flex items-center gap-3">
@@ -167,7 +167,7 @@
         </div>
 
         <div class="divide-y divide-border-subtle">
-          {#each infra as item}
+          {#each infra as item (item.name)}
             <div class="flex items-center justify-between gap-4 px-6 py-4">
               <span class="font-sans text-sm text-text-primary">{item.name}</span>
               {#if item.qualifier}
@@ -192,7 +192,7 @@
         <span class="text-label text-blue-500 tracking-widest">SYSTEM METRICS</span>
       </div>
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {#each stats as stat, i}
+        {#each stats as stat, i (stat.label)}
           <div use:reveal={{ delay: 200 + i * 60 }} class="reveal">
             <StatCard
               value={stat.value}

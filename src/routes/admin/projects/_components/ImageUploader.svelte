@@ -276,7 +276,7 @@
 <!-- ── Gallery list ─────────────────────────────────────────────────────────── -->
 {#if loading}
   <div class="mt-3 space-y-px overflow-hidden rounded border border-[--color-border-subtle]">
-    {#each [1, 2] as _}
+    {#each [1, 2] as n (n)}
       <div class="flex items-center gap-3 bg-[--color-bg-subtle] px-3 py-2.5">
         <div class="h-4 w-4 animate-pulse rounded bg-[--color-bg-elevated]"></div>
         <div class="h-10 w-14 animate-pulse rounded bg-[--color-bg-elevated]"></div>

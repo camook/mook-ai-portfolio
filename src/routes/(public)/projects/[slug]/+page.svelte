@@ -162,7 +162,7 @@
       <!-- Category tags -->
       {#if project.category_tags.length > 0}
         <div use:reveal class="reveal flex flex-wrap gap-2 mb-6">
-          {#each project.category_tags as tag}
+          {#each project.category_tags as tag (tag)}
             <Badge variant="neutral">{tag}</Badge>
           {/each}
         </div>
@@ -242,7 +242,7 @@
 
             <!-- Dot indicators — aria-hidden since prev/next buttons already provide keyboard control -->
             <div class="absolute bottom-4 inset-x-0 flex justify-center gap-1.5" aria-hidden="true">
-              {#each images as _, i}
+              {#each images as img, i (img.r2_key)}
                 <span
                   class="size-1.5 rounded-full transition-colors duration-150
                          {activeIdx === i ? 'bg-blue-400' : 'bg-white/30'}"
@@ -262,7 +262,7 @@
         <!-- Thumbnail strip -->
         {#if images.length > 1}
           <div class="flex gap-2 mt-4 overflow-x-auto pb-1">
-            {#each images as img, i}
+            {#each images as img, i (img.r2_key)}
               <button
                 onclick={() => (activeIdx = i)}
                 aria-label="View image {i + 1}"
@@ -331,7 +331,7 @@
               <span class="text-label text-blue-500">TECH STACK</span>
             </div>
             <div class="flex flex-wrap gap-2">
-              {#each project.tech_stack as tech}
+              {#each project.tech_stack as tech (tech)}
                 <TechPill label={tech} />
               {/each}
             </div>

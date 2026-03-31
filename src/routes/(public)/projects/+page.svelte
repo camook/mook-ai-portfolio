@@ -170,7 +170,7 @@
 
   <!-- Dynamic project grid -->
   <div class="space-y-5">
-    {#each groups as group, gi}
+    {#each groups as group, gi (gi)}
 
       {#if group.type === 'hero'}
         <!-- ── Hero row: large (8/12) + sidebar (4/12) ── -->
@@ -195,7 +195,7 @@
 
           {#if group.sidebar.length > 0}
             <div use:reveal={{ delay: 200 }} class="reveal col-span-12 lg:col-span-4 flex flex-col gap-5">
-              {#each group.sidebar as card, ci}
+              {#each group.sidebar as card, ci (card.slug)}
                 {#if card.card_size === 'small'}
                   <ProjectCardSmall
                     index={idx(gi + ci + 2)}
@@ -231,7 +231,7 @@
       {:else}
         <!-- ── Row of medium / small cards ── -->
         <div class="grid grid-cols-12 gap-5">
-          {#each group.cards as card, ci}
+          {#each group.cards as card, ci (card.slug)}
             <div
               use:reveal={{ delay: ci * 80 }}
               class="reveal {rowColSpan(card, group.cards.length)}"

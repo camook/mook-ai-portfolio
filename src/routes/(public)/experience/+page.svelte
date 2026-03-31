@@ -99,7 +99,7 @@
     ></div>
 
     <div class="space-y-0">
-      {#each roles as role, i}
+      {#each roles as role, i (role.id)}
         <div
           use:reveal={{ delay: i * 60 }}
           class="reveal relative grid grid-cols-1 lg:grid-cols-[13rem_1fr] gap-0 lg:gap-0

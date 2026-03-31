@@ -31,7 +31,7 @@
 
     <nav class="flex-1 px-3 py-4">
       <ul class="space-y-0.5">
-        {#each navItems as item}
+        {#each navItems as item (item.href)}
           <li>
             <a
               href={item.href}

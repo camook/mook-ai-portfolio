@@ -263,7 +263,7 @@
       <div class={sideSection}>
         <p class={sideLabel}>Card size</p>
         <div class="grid grid-cols-3 gap-1">
-          {#each (['large', 'medium', 'small'] as const) as size}
+          {#each (['large', 'medium', 'small'] as const) as size (size)}
             <button
               type="button"
               onclick={() => (cardSize = size)}

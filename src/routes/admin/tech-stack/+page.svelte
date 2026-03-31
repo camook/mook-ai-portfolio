@@ -289,7 +289,7 @@
         <div class="col-span-2 space-y-1">
           <label class={lbl}>Category</label>
           <div class="flex gap-1">
-            {#each CATEGORIES as cat}
+            {#each CATEGORIES as cat (cat)}
               <button
                 type="button"
                 onclick={() => (dCategory = cat)}
@@ -446,7 +446,7 @@
               <div class="col-span-2 space-y-1">
                 <label class={lbl}>Category</label>
                 <div class="flex gap-1">
-                  {#each CATEGORIES as cat}
+                  {#each CATEGORIES as cat (cat)}
                     <button
                       type="button"
                       onclick={() => (dCategory = cat)}

@@ -262,7 +262,7 @@
         <div class="col-span-2 space-y-1">
           <label class={lbl}>Section</label>
           <div class="flex gap-1">
-            {#each SECTIONS as sec}
+            {#each SECTIONS as sec (sec)}
               <button
                 type="button"
                 onclick={() => (dSection = sec)}
@@ -396,7 +396,7 @@
               <div class="col-span-2 space-y-1">
                 <label class={lbl}>Section</label>
                 <div class="flex gap-1">
-                  {#each SECTIONS as sec}
+                  {#each SECTIONS as sec (sec)}
                     <button
                       type="button"
                       onclick={() => (dSection = sec)}
