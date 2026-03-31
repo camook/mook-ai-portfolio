@@ -104,7 +104,7 @@
     <!-- Category tag badges -->
     {#if categoryTags.length > 0}
       <div class="flex flex-wrap gap-1.5 -mt-1">
-        {#each categoryTags as tag}
+        {#each categoryTags as tag (tag)}
           <Badge variant="neutral">{tag}</Badge>
         {/each}
       </div>
@@ -126,7 +126,7 @@
     <!-- Stats row -->
     {#if stats && stats.length > 0}
       <div class="flex items-stretch gap-0 border-y border-border-subtle py-4">
-        {#each stats as stat, i}
+        {#each stats as stat, i (stat.label)}
           {#if i > 0}
             <div class="w-px bg-border-subtle mx-6 shrink-0"></div>
           {/if}
@@ -143,7 +143,7 @@
     <!-- Tech pills -->
     {#if tags.length > 0}
       <div class="flex flex-wrap gap-1.5">
-        {#each tags as tag}
+        {#each tags as tag (tag)}
           <TechPill label={tag} />
         {/each}
       </div>

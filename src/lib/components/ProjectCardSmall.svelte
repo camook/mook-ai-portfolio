@@ -96,7 +96,7 @@
   <!-- Optional feature bullets -->
   {#if features.length > 0}
     <ul class="space-y-1.5 -mt-1">
-      {#each features.slice(0, 3) as feature}
+      {#each features.slice(0, 3) as feature (feature)}
         <li class="flex items-start gap-2 text-xs font-sans font-light text-text-disabled leading-relaxed">
           <span class="mt-[0.35em] size-1 rounded-full bg-blue-600/50 shrink-0" aria-hidden="true"></span>
           {feature}
@@ -108,7 +108,7 @@
   <!-- Tech pills -->
   {#if tags.length > 0}
     <div class="flex flex-wrap gap-1.5">
-      {#each tags.slice(0, 3) as tag}
+      {#each tags.slice(0, 3) as tag (tag)}
         <TechPill label={tag} />
       {/each}
       {#if tags.length > 3}

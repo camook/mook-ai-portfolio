@@ -42,7 +42,6 @@
   // Display string — keep prefix chars like "<"
   const prefixMatch = primary.value.match(/^([^0-9]*)([0-9.]+)(.*)$/);
   const prefix  = prefixMatch?.[1]?.trim() ?? '';
-  const numStr  = prefixMatch?.[2] ?? primary.value;
   const suffix  = primary.unit ? ` ${primary.unit}` : (prefixMatch?.[3]?.trim() ?? '');
 
   let displayNum  = $state(0);
@@ -261,7 +260,7 @@
           <!-- Secondary stats grid -->
           {#if secondary.length}
             <div class="grid grid-cols-3 gap-3">
-              {#each secondary.slice(0, 3) as stat}
+              {#each secondary.slice(0, 3) as stat (stat.label)}
                 <div class="flex flex-col gap-1.5 p-3 rounded-lg bg-bg-muted border border-border-subtle">
                   <span class="font-display text-[1.25rem] leading-none text-text-primary tabular-nums">
                     {stat.value}{stat.unit ? stat.unit : ''}
@@ -333,7 +332,7 @@
 
     <!-- Medium / small cards stacked -->
     <div use:reveal={{ delay: 200 }} class="reveal col-span-12 lg:col-span-4 flex flex-col gap-5">
-      {#each mediumCards as card, i}
+      {#each mediumCards as card, i (card.slug)}
         <ProjectCardMedium
           index="0{i + 2}"
           title={card.title}
@@ -346,7 +345,7 @@
           class="flex-1"
         />
       {/each}
-      {#each smallCards.slice(0, 1) as card, i}
+      {#each smallCards.slice(0, 1) as card, i (card.slug)}
         <ProjectCardSmall
           index="0{mediumCards.length + i + 2}"
           title={card.title}

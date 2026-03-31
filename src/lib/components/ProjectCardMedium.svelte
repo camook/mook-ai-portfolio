@@ -117,7 +117,7 @@
     <!-- Tech pills -->
     {#if tags.length > 0}
       <div class="flex flex-wrap gap-1.5">
-        {#each tags.slice(0, 4) as tag}
+        {#each tags.slice(0, 4) as tag (tag)}
           <TechPill label={tag} />
         {/each}
         {#if tags.length > 4}
