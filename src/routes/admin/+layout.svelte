@@ -12,6 +12,7 @@
     { href: "/admin/tech-stack", label: "Tech Stack" },
     { href: "/admin/site-content", label: "Site Content" },
     { href: "/admin/stats", label: "Stats" },
+    { href: "/admin/contact", label: "Contact" },
   ];
 
   function isActive(href: string) {

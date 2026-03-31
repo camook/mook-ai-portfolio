@@ -58,7 +58,7 @@ D1 (SQLite at the edge). Schema lives in `migrations/` — numbered SQL files ap
 - `tech_stack` — named tech items with `category` (`pill`/`runtime`/`infrastructure`) and optional `percentage`/`qualifier`
 - `site_content` — flat key/value CMS for copy (hero headline, etc.); upserted by key; keys used by public pages: `hero_headline`, `hero_subtitle`, `stack_description`
 - `stats` — metric callouts; `section` is `hero` or `tech_stack`; `unit` is a display suffix (e.g. `"req/s"`)
-- `contact_submissions` — stores submissions from `POST /api/contact`; fields: `id`, `name`, `email`, `message`, `created_at`
+- `contact_submissions` — stores submissions from `POST /api/contact`; fields: `id`, `name`, `email`, `message`, `created_at`, `read` (0/1 integer, default 0)
 
 ### API routes
 
@@ -88,6 +88,7 @@ All admin API routes live under `/api/admin/*`. Sub-routers:
 | `/api/admin/tech-stack` | `src/lib/server/api/admin/tech-stack.ts` | GET, POST, PUT `/:id`, DELETE `/:id`, PATCH `/reorder` |
 | `/api/admin/site-content` | `src/lib/server/api/admin/site-content.ts` | GET, PUT `/:key` |
 | `/api/admin/stats` | `src/lib/server/api/admin/stats.ts` | GET, POST, PUT `/:id`, DELETE `/:id`, PATCH `/reorder` |
+| `/api/admin/contact` | `src/lib/server/api/admin/contact.ts` | GET, PATCH `/:id` (set `read`), DELETE `/:id` |
 
 Zod schemas for all request bodies are centralised in `src/lib/server/api/admin/schemas.ts`. **Important:** In Hono, register static route segments (e.g. `/reorder`) before dynamic ones (e.g. `/:id`) — Hono matches in registration order for the same HTTP method.
 
@@ -170,6 +171,7 @@ Protected at `/admin/*` by Cloudflare Access. Layout: fixed 224px sidebar + flex
 | `/admin/tech-stack` | Expandable list — inline create/edit/delete, DnD reorder |
 | `/admin/site-content` | Key/value CMS — per-entry textarea with explicit Save |
 | `/admin/stats` | Expandable list — inline create/edit/delete, DnD reorder |
+| `/admin/contact` | Read-only inbox — expand to read, mark read/unread, delete, reply mailto |
 
 ### Admin page patterns
 

@@ -8,6 +8,7 @@ import { experienceAdminRouter } from "./api/admin/experience.js";
 import { techStackAdminRouter } from "./api/admin/tech-stack.js";
 import { siteContentAdminRouter } from "./api/admin/site-content.js";
 import { statsAdminRouter } from "./api/admin/stats.js";
+import { contactAdminRouter } from "./api/admin/contact.js";
 import { projectsPublicRouter } from "./api/public/projects.js";
 import { experiencePublicRouter } from "./api/public/experience.js";
 import { techStackPublicRouter } from "./api/public/tech-stack.js";
@@ -25,7 +26,8 @@ const apiAdmin = new Hono<AppEnv>()
   .route("/experience", experienceAdminRouter)
   .route("/tech-stack", techStackAdminRouter)
   .route("/site-content", siteContentAdminRouter)
-  .route("/stats", statsAdminRouter);
+  .route("/stats", statsAdminRouter)
+  .route("/contact", contactAdminRouter);
 
 // API sub-router — all paths are relative to the /api mount point
 const api = new Hono<AppEnv>()
