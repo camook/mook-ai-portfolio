@@ -1,9 +1,24 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import { Button, Badge, TechPill } from '$lib/components';
   import { reveal } from '$lib/actions/reveal';
 
   let { data } = $props();
   const { project, images, prevProject, nextProject } = data;
+
+  // ── SEO ──────────────────────────────────────────────────────────────────
+  const metaTitle       = `${project.title} — Mook·AI`;
+  const metaDescription = project.description.slice(0, 155);
+  const canonicalUrl    = `${page.url.origin}/projects/${project.slug}`;
+  // Use first project image for OG if available, fall back to site default
+  const ogImage = images.length > 0
+    ? `${page.url.origin}/api/images/${images[0].r2_key}?w=1200&fit=cover&format=webp`
+    : `${page.url.origin}/og-image.png`;
+
+  // Helper to build a resized image URL (omit format so browsers use Accept header)
+  function imgUrl(key: string, w: number) {
+    return `/api/images/${key}?w=${w}`;
+  }
 
   // ── Image carousel state ─────────────────────────────────────────────
   let activeIdx = $state(0);
@@ -82,6 +97,38 @@
   const renderedMd = $derived(renderMd(project.long_description || ''));
   const hasContent  = project.long_description?.trim().length > 0;
 </script>
+
+<svelte:head>
+  <title>{metaTitle}</title>
+  <meta name="description" content={metaDescription} />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta property="og:title" content={metaTitle} />
+  <meta property="og:description" content={metaDescription} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:alt" content={project.title} />
+  <meta name="twitter:image" content={ogImage} />
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html '<script type="application/ld+json">' + JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: project.title,
+    description: project.description,
+    url: canonicalUrl,
+    ...(project.live_url?.trim() ? { installUrl: project.live_url } : {}),
+    ...(project.github_url?.trim() ? { codeRepository: project.github_url } : {}),
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Web',
+    programmingLanguage: project.tech_stack,
+    datePublished: project.created_at?.slice(0, 10),
+    creator: {
+      '@type': 'Person',
+      name: 'Mook',
+      url: page.url.origin,
+    },
+  }) + '</' + 'script>'}
+</svelte:head>
 
 <div class="min-h-screen bg-bg-base">
   <div class="max-w-7xl mx-auto px-6 pt-12 pb-24">
@@ -167,8 +214,10 @@
         <!-- Main image -->
         <div class="relative rounded-xl overflow-hidden bg-bg-elevated" style="aspect-ratio: 16/10;">
           <img
-            src={'/api/images/' + images[activeIdx].r2_key}
+            src={imgUrl(images[activeIdx].r2_key, 1440)}
             alt={images[activeIdx].alt_text || project.title}
+            fetchpriority="high"
+            decoding="async"
             class="absolute inset-0 size-full object-cover transition-opacity duration-300"
           />
 
@@ -181,7 +230,7 @@
                      bg-bg-overlay/80 backdrop-blur-sm border border-border-subtle
                      flex items-center justify-center text-text-secondary
                      hover:text-white hover:border-border-muted transition-colors duration-150"
-            >←</button>
+            ><span aria-hidden="true">←</span></button>
             <button
               onclick={nextImg}
               aria-label="Next image"
@@ -189,16 +238,15 @@
                      bg-bg-overlay/80 backdrop-blur-sm border border-border-subtle
                      flex items-center justify-center text-text-secondary
                      hover:text-white hover:border-border-muted transition-colors duration-150"
-            >→</button>
+            ><span aria-hidden="true">→</span></button>
 
-            <!-- Dot indicators -->
+            <!-- Dot indicators — aria-hidden since prev/next buttons already provide keyboard control -->
             <div class="absolute bottom-4 inset-x-0 flex justify-center gap-1.5" aria-hidden="true">
               {#each images as _, i}
-                <button
-                  onclick={() => (activeIdx = i)}
+                <span
                   class="size-1.5 rounded-full transition-colors duration-150
-                         {activeIdx === i ? 'bg-blue-400' : 'bg-white/30 hover:bg-white/60'}"
-                ></button>
+                         {activeIdx === i ? 'bg-blue-400' : 'bg-white/30'}"
+                ></span>
               {/each}
             </div>
           {/if}
@@ -224,8 +272,10 @@
                          : 'border-border-subtle opacity-60 hover:opacity-90 hover:border-border-muted'}"
               >
                 <img
-                  src={'/api/images/' + img.r2_key}
+                  src={imgUrl(img.r2_key, 128)}
                   alt={img.alt_text || ''}
+                  loading="lazy"
+                  decoding="async"
                   class="size-full object-cover"
                 />
               </button>

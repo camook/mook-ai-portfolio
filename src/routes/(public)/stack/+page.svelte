@@ -80,6 +80,13 @@
   });
 </script>
 
+<svelte:head>
+  <title>Tech Stack — Mook·AI</title>
+  <meta name="description" content="The full technical toolkit — Cloudflare Workers, D1, R2, Durable Objects, Workers AI, SvelteKit, TypeScript, and the infrastructure layer powering every project." />
+  <meta property="og:title" content="Tech Stack — Mook·AI" />
+  <meta property="og:description" content="The full technical toolkit — Cloudflare Workers, D1, R2, Durable Objects, Workers AI, SvelteKit, TypeScript, and the infrastructure layer powering every project." />
+</svelte:head>
+
 <div class="min-h-screen bg-bg-base px-6 pt-12 pb-24 max-w-7xl mx-auto">
 
   <!-- Section header -->

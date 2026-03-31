@@ -37,6 +37,7 @@
 </script>
 
 <header
+  role="banner"
   class="fixed inset-x-0 top-0 z-50 transition-all duration-300
          {scrolled
            ? 'bg-bg-base/80 backdrop-blur-md border-b border-border-subtle shadow-[0_1px_24px_rgba(0,0,0,0.3)]'

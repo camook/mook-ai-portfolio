@@ -5,6 +5,7 @@
     ProjectCardMedium,
     ProjectCardSmall,
   } from '$lib/components';
+  import { page } from '$app/state';
   import { reveal } from '$lib/actions/reveal';
 
   let { data } = $props();
@@ -145,6 +146,15 @@
   // Pad the padded index string
   function idx(n: number) { return String(n).padStart(2, '0'); }
 </script>
+
+<svelte:head>
+  <title>Projects — Mook·AI</title>
+  <meta name="description" content="A collection of edge AI infrastructure projects — inference gateways, collaborative runtimes, developer tooling, and distributed systems built on Cloudflare Workers." />
+  <link rel="canonical" href="{page.url.origin}/projects" />
+  <meta property="og:title" content="Projects — Mook·AI" />
+  <meta property="og:description" content="A collection of edge AI infrastructure projects — inference gateways, collaborative runtimes, developer tooling, and distributed systems built on Cloudflare Workers." />
+  <meta property="og:url" content="{page.url.origin}/projects" />
+</svelte:head>
 
 <div class="min-h-screen bg-bg-base px-6 pt-12 pb-24 max-w-7xl mx-auto">
 

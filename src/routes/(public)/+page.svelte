@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { page } from '$app/state';
   import { Button, ProjectCardLarge, ProjectCardMedium, ProjectCardSmall } from '$lib/components';
   import { reveal } from '$lib/actions/reveal';
 
@@ -104,11 +105,44 @@
 
   const featured: FeaturedProject[] = data.projects?.length ? data.projects : FALLBACK_FEATURED;
 
+  // ── SEO ──────────────────────────────────────────────────────────────────
+  const metaTitle       = 'Mook·AI — Edge AI Infrastructure Engineer';
+  const metaDescription = subtitle.slice(0, 155);
+
   // Map to card-size buckets
   const largeCard  = featured.find((p) => p.card_size === 'large')  ?? featured[0];
   const mediumCards = featured.filter((p) => p !== largeCard && p.card_size !== 'small').slice(0, 2);
   const smallCards  = featured.filter((p) => p !== largeCard && !mediumCards.includes(p));
 </script>
+
+<svelte:head>
+  <title>{metaTitle}</title>
+  <meta name="description" content={metaDescription} />
+  <link rel="canonical" href="{page.url.origin}/" />
+  <meta property="og:title" content={metaTitle} />
+  <meta property="og:description" content={metaDescription} />
+  <meta property="og:url" content="{page.url.origin}/" />
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+  {@html '<script type="application/ld+json">' + JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Mook',
+    url: page.url.origin,
+    jobTitle: 'Edge AI Infrastructure Engineer',
+    description: metaDescription,
+    email: 'hello@mook.ai',
+    knowsAbout: [
+      'Cloudflare Workers', 'Edge Computing', 'TypeScript', 'AI Inference',
+      'Durable Objects', 'SvelteKit', 'Distributed Systems', 'WebSockets',
+    ],
+    mainEntityOfPage: {
+      '@type': 'WebSite',
+      '@id': page.url.origin,
+      name: 'Mook·AI',
+      url: page.url.origin,
+    },
+  }) + '</' + 'script>'}
+</svelte:head>
 
 <!-- ════════════════════════════════════════════════════════════════════════
      HERO

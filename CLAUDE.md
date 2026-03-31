@@ -74,7 +74,7 @@ Live under `/api/*`. All return only `published` records. Responses are cached v
 | `GET /api/tech-stack` | `src/lib/server/api/public/tech-stack.ts` | Grouped by `category` (`pill`/`runtime`/`infrastructure`) |
 | `GET /api/content` | `src/lib/server/api/public/content.ts` | Flat `{ [key]: value }` map of all `site_content` rows |
 | `GET /api/stats` | `src/lib/server/api/public/stats.ts` | Grouped by `section` (`hero`/`tech_stack`) |
-| `GET /api/images/*` | `src/lib/server/api/public/images.ts` | R2 proxy; wildcard handles slash keys (`projects/{id}/{imgId}.jpg`); `Cache-Control: public, max-age=31536000, immutable`; ETag + 304 support |
+| `GET /api/images/*` | `src/lib/server/api/public/images.ts` | R2 proxy; wildcard handles slash keys (`projects/{id}/{imgId}.jpg`); `Cache-Control: public, max-age=31536000, immutable`; ETag + 304 support; optional resize via `?w`, `?h`, `?fit`, `?format`, `?q` — uses Cloudflare Image Resizing when enabled on the zone, falls back to original |
 | `POST /api/contact` | `src/lib/server/api/public/contact.ts` | Validates `{ name, email, message }` with Zod and inserts into `contact_submissions`; returns `{ ok: true }` on success |
 
 #### Admin (Cloudflare Access JWT required)
@@ -153,7 +153,22 @@ All routes live under `src/routes/(public)/`. Each page has a `+page.server.ts` 
 
 **Experience timeline**: `year_label === 'CURRENT'` controls the blue glowing dot and badge. The large ghost year number is a decorative background element at `opacity-[0.1]`.
 
-**Contact form** (`/connect`): three states — `idle` (form), `submitting` (spinner on button), `success` (confirmation card). On success the form fields are cleared and a "Send another →" reset link is shown. Error messages from the API surface inline below the textarea.
+**Contact form** (`/connect`): three states — `idle` (form), `submitting` (spinner on button), `success` (confirmation card). On success the form fields are cleared and a "Send another →" reset link is shown. Error messages live in a persistent `role="alert"` / `aria-live="assertive"` paragraph (always in the DOM, text set on error) so screen readers announce them without a focus change.
+
+### SEO & discoverability
+
+- **Meta tags** — every public page sets `<title>`, `<meta name="description">`, `og:title`, `og:description`, `og:url`, and `canonical` via `<svelte:head>`. The public layout (`(public)/+layout.svelte`) provides site-wide defaults (`og:site_name`, `og:image`, `twitter:card`, `theme-color`); individual pages override as needed.
+- **OG image** — defaults to `/og-image.png` (static file — must be added to `static/`; 1200×630 PNG); project detail pages use the first project image at `?w=1200&fit=cover&format=webp`.
+- **JSON-LD** — home page injects a `Person` schema; project detail pages inject a `SoftwareApplication` schema. Both use `{@html '<script type="application/ld+json">' + JSON.stringify({...}) + '</' + 'script>'}` inside `<svelte:head>` (the closing tag is split to avoid ESLint parser confusion).
+- **`robots.txt`** — `src/routes/robots.txt/+server.ts`; allows all, blocks `/admin/` and `/api/admin/`, points to sitemap.
+- **`sitemap.xml`** — `src/routes/sitemap.xml/+server.ts`; queries D1 for published project slugs dynamically; cached 1 hour.
+
+### Accessibility
+
+- **Skip link** — `<a href="#main-content">Skip to content</a>` in the public layout, visible on focus; `<main id="main-content" tabindex="-1">` is the target.
+- **ARIA landmarks** — `<header role="banner">`, `<main>`, `<footer>` (contentinfo), `<nav aria-label="...">` are all present.
+- **Carousel dot indicators** — rendered as `<span aria-hidden="true">` inside an `aria-hidden` container; keyboard navigation is provided by the labelled Prev/Next buttons only (avoids focusable elements inside `aria-hidden`).
+- **Images** — hero/LCP image uses `fetchpriority="high" decoding="async"`; thumbnails use `loading="lazy" decoding="async"`.
 
 ## Admin UI
 

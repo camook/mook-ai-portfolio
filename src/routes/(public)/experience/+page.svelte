@@ -69,6 +69,13 @@
   const roles: Role[] = data.roles?.length ? data.roles : FALLBACK;
 </script>
 
+<svelte:head>
+  <title>Experience — Mook·AI</title>
+  <meta name="description" content="Engineering career timeline — senior and staff-level roles building edge AI infrastructure, developer tooling, and distributed systems at global scale." />
+  <meta property="og:title" content="Experience — Mook·AI" />
+  <meta property="og:description" content="Engineering career timeline — senior and staff-level roles building edge AI infrastructure, developer tooling, and distributed systems at global scale." />
+</svelte:head>
+
 <div class="min-h-screen bg-bg-base px-6 pt-12 pb-24 max-w-7xl mx-auto">
 
   <!-- Page label -->

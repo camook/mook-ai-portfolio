@@ -45,6 +45,14 @@
   }
 </script>
 
+<svelte:head>
+  <title>Connect — Mook·AI</title>
+  <meta name="description" content="Open to senior/staff engineering roles and contracts. Reach out to discuss edge AI infrastructure, developer tooling, or anything that runs at global scale." />
+  <meta property="og:title" content="Connect — Mook·AI" />
+  <meta property="og:description" content="Open to senior/staff engineering roles and contracts. Reach out to discuss edge AI infrastructure, developer tooling, or anything that runs at global scale." />
+  <meta name="robots" content="noindex, follow" />
+</svelte:head>
+
 <div class="min-h-screen bg-bg-base px-6 pt-12 pb-24 max-w-7xl mx-auto">
 
   <!-- Split layout -->
@@ -150,6 +158,7 @@
         <!-- Form -->
         <form
           onsubmit={handleSubmit}
+          aria-label="Contact form"
           class="rounded-xl border border-border-subtle bg-bg-elevated p-6 sm:p-8 space-y-5"
         >
 
@@ -216,10 +225,14 @@
             ></textarea>
           </div>
 
-          <!-- Error message -->
-          {#if status === 'error'}
-            <p class="text-xs font-sans text-red-400 leading-relaxed">{errorMsg}</p>
-          {/if}
+          <!-- Error message — aria-live so screen readers announce it without focus change -->
+          <p
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            class="text-xs font-sans text-red-400 leading-relaxed
+                   {status === 'error' ? '' : 'sr-only'}"
+          >{status === 'error' ? errorMsg : ''}</p>
 
           <!-- Submit -->
           <button
