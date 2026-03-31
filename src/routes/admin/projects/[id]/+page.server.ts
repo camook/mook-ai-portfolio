@@ -2,7 +2,10 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ platform, params }) => {
-  const row = await platform!.env.DB.prepare('SELECT * FROM projects WHERE id = ?')
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
+  const row = await db.prepare('SELECT * FROM projects WHERE id = ?')
     .bind(params.id)
     .first<Record<string, unknown>>();
 

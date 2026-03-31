@@ -12,7 +12,9 @@ export type Project = {
 };
 
 export const load: PageServerLoad = async ({ platform }) => {
-  const db = platform!.env.DB;
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
   const { results } = await db
     .prepare(
       `SELECT id, title, slug, card_size, sort_order, status, featured, updated_at

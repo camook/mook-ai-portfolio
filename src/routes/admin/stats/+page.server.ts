@@ -10,7 +10,10 @@ export type StatEntry = {
 };
 
 export const load: PageServerLoad = async ({ platform }) => {
-  const { results } = await platform!.env.DB.prepare(
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
+  const { results } = await db.prepare(
     "SELECT * FROM stats ORDER BY section ASC, sort_order ASC",
   ).all<Record<string, unknown>>();
 

@@ -11,7 +11,10 @@ export type TechStackEntry = {
 };
 
 export const load: PageServerLoad = async ({ platform }) => {
-  const { results } = await platform!.env.DB.prepare(
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
+  const { results } = await db.prepare(
     "SELECT * FROM tech_stack ORDER BY category ASC, sort_order ASC",
   ).all<Record<string, unknown>>();
 

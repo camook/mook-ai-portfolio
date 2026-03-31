@@ -10,7 +10,10 @@ export type ContactSubmission = {
 };
 
 export const load: PageServerLoad = async ({ platform }) => {
-  const { results } = await platform!.env.DB.prepare(
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
+  const { results } = await db.prepare(
     "SELECT * FROM contact_submissions ORDER BY created_at DESC",
   ).all<Record<string, unknown>>();
 

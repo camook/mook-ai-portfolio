@@ -16,7 +16,10 @@ export type ExperienceEntry = {
 };
 
 export const load: PageServerLoad = async ({ platform }) => {
-  const { results } = await platform!.env.DB.prepare(
+  const db = platform?.env?.DB;
+  if (!db) throw new Error("Database binding unavailable");
+
+  const { results } = await db.prepare(
     "SELECT * FROM experience ORDER BY sort_order ASC, year DESC",
   ).all<Record<string, unknown>>();
 
