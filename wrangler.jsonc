@@ -46,8 +46,8 @@
   // ACCESS_TEAM: your Cloudflare Zero Trust team name (e.g. "myteam" from myteam.cloudflareaccess.com)
   "vars": {
     "ENVIRONMENT": "production",
-    "ACCESS_AUD": "<ACCESS_AUD>",
-    "ACCESS_TEAM": "<ACCESS_TEAM>"
+    "ACCESS_AUD": "a387ea4b815d2eecac1f8ac03d5e72361722466558794bec360a09c52b219c49",
+    "ACCESS_TEAM": "mookai.clouflareaccess.com"
   },
 
   // Local dev overrides — Access JWT check is bypassed when ENVIRONMENT=development
