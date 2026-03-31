@@ -163,6 +163,25 @@ All routes live under `src/routes/(public)/`. Each page has a `+page.server.ts` 
 - **`robots.txt`** — `src/routes/robots.txt/+server.ts`; allows all, blocks `/admin/` and `/api/admin/`, points to sitemap.
 - **`sitemap.xml`** — `src/routes/sitemap.xml/+server.ts`; queries D1 for published project slugs dynamically; cached 1 hour.
 
+### Error pages
+
+Two `+error.svelte` files handle 404/500 responses:
+
+- **Root** (`src/routes/+error.svelte`) — standalone error page with Header + Footer (used when the error occurs outside the `(public)` layout group). Includes its own skip link and favicon meta.
+- **Public** (`src/routes/(public)/+error.svelte`) — nested inside the `(public)` layout (inherits header/footer). Both share the same visual treatment: ghost status number backdrop, status pill, heading, description, and "Back to Home" / "View Projects" action buttons.
+
+Both set `<meta name="robots" content="noindex" />` so error pages are never indexed.
+
+### Static assets
+
+Files in `static/` are served directly from the CDN:
+
+- `favicon.svg` — geometric "M" mark (blue on dark background)
+- `og-image.png` — 1200×630 PNG for Open Graph / social sharing previews
+- `site.webmanifest` — PWA manifest (`standalone` display, dark theme)
+
+The public layout (`(public)/+layout.svelte`) links the favicon, manifest, and has a commented-out Cloudflare Web Analytics snippet (replace the token placeholder to enable).
+
 ### Accessibility
 
 - **Skip link** — `<a href="#main-content">Skip to content</a>` in the public layout, visible on focus; `<main id="main-content" tabindex="-1">` is the target.
@@ -208,3 +227,18 @@ Protected at `/admin/*` by Cloudflare Access. Layout: fixed 224px sidebar + flex
 - **`MarkdownEditor.svelte`** — tabbed Write/Preview; inline renderer (no external deps); prose styles in `<style>` block using `:global()` to avoid Tailwind scanning issues
 - **`ProjectForm.svelte`** — shared create/edit form; auto-slug from title (`autoSlug` flag); `thumbnailKeyOverride` prop synced via `$effect` for gallery→form thumbnail selection
 - **`ImageUploader.svelte`** — dual-purpose: gallery manager (DnD reorder, inline alt/caption editing, delete) + new upload drop zone with XHR progress bars; images proxied via `/blob` endpoint since R2 is private
+
+## CI/CD
+
+GitHub Actions workflows live in `.github/workflows/`:
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `ci.yml` | Push/PR to `main` | Parallel typecheck (`pnpm check`) + lint (`pnpm lint`) |
+| `deploy.yml` | Push to `main` | Build → apply D1 migrations → `wrangler deploy` to production |
+| `preview.yml` | PR to `main` | Build → deploy to a PR-specific Worker (`mook-ai-portfolio-pr-{N}`) → post preview URL as PR comment |
+
+**Required GitHub secrets** (set in repo Settings → Secrets):
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_WORKERS_SUBDOMAIN` (used by preview workflow to construct the preview URL)

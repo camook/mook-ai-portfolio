@@ -1,0 +1,17 @@
+{
+  "name": "Mook·AI",
+  "short_name": "Mook·AI",
+  "description": "Edge AI Infrastructure Engineer — precision-engineered AI systems on Cloudflare's global edge.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

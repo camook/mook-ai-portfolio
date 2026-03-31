@@ -7,3 +7,6 @@ dist/
 
 # Local secrets — never commit
 .dev.vars
+
+# Private docs — not for public repo
+DEPLOY.md

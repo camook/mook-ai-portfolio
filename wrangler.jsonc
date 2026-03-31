@@ -21,7 +21,7 @@
     {
       "binding": "DB",
       "database_name": "mook-ai-portfolio-db",
-      "database_id": "<DATABASE_ID>",
+      "database_id": "cabaef5c-dbec-4290-957d-9a0687a701bb",
       "migrations_dir": "migrations",
       // Local state persisted to .wrangler/state so it survives restarts
       "preview_database_id": "local"
@@ -63,7 +63,7 @@
         {
           "binding": "DB",
           "database_name": "mook-ai-portfolio-db",
-          "database_id": "<DATABASE_ID>",
+          "database_id": "cabaef5c-dbec-4290-957d-9a0687a701bb",
           "migrations_dir": "migrations",
           "preview_database_id": "local"
         }

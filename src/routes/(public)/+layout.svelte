@@ -24,6 +24,13 @@
 
   <!-- Theme color for mobile browsers -->
   <meta name="theme-color" content="#0a0e1a" />
+
+  <!-- Favicon & web app manifest -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Cloudflare Web Analytics — replace token with your site token from dash.cloudflare.com -->
+  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"REPLACE_WITH_YOUR_TOKEN"}'></script> -->
 </svelte:head>
 
 <!-- Skip-to-content for keyboard users -->
