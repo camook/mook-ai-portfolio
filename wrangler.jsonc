@@ -47,7 +47,7 @@
   "vars": {
     "ENVIRONMENT": "production",
     "ACCESS_AUD": "a387ea4b815d2eecac1f8ac03d5e72361722466558794bec360a09c52b219c49",
-    "ACCESS_TEAM": "mookai.clouflareaccess.com"
+    "ACCESS_TEAM": "mookai"
   },
 
   // Local dev overrides — Access JWT check is bypassed when ENVIRONMENT=development
