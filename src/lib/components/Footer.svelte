@@ -25,7 +25,7 @@
 
       <!-- Nav links -->
       <nav class="flex flex-wrap items-center gap-x-6 gap-y-2" aria-label="Footer navigation">
-        {#each navLinks as { href, label }}
+        {#each navLinks as { href, label } (href)}
           <a
             {href}
             class="text-xs font-sans font-light text-text-disabled tracking-[-0.01em]

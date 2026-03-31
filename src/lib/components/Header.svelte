@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { afterNavigate } from '$app/navigation';
-  import { fly, fade } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   import Button from './Button.svelte';
 
   const navLinks = [
@@ -58,7 +58,7 @@
 
     <!-- Desktop nav — centred -->
     <nav class="hidden md:flex items-center gap-1" aria-label="Primary navigation">
-      {#each navLinks as { href, label, index }}
+      {#each navLinks as { href, label, index } (href)}
         {@const active = isActive(href)}
         <a
           {href}
@@ -129,7 +129,7 @@
              border-b border-border-subtle shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
     >
       <nav class="mx-auto max-w-7xl px-6 py-6 flex flex-col" aria-label="Mobile navigation">
-        {#each navLinks as { href, label, index }, i}
+        {#each navLinks as { href, label, index } (href)}
           {@const active = isActive(href)}
           <a
             {href}

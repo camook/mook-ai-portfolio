@@ -21,6 +21,11 @@ export default tseslint.config(
     },
   },
   {
+    rules: {
+      "svelte/no-navigation-without-resolve": "off",
+    },
+  },
+  {
     ignores: [".svelte-kit/", "dist/", ".wrangler/"],
   },
 );
